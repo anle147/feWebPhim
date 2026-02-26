@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "../services/api";
+import "./MovieDetail.css";
 
 function MovieDetail() {
   const { id } = useParams();
@@ -12,16 +13,45 @@ function MovieDetail() {
       .catch(err => console.error(err));
   }, [id]);
 
-  if (!movie) return <h2>Loading...</h2>;
+  if (!movie) return <div className="loading">Loading...</div>;
 
   return (
-    <div style={{ padding: "40px", color: "white" }}>
-      <h1>{movie.Title}</h1>
-      <img src={movie.PosterURL} width="300" />
-      <p><b>Năm:</b> {movie.ReleaseYear}</p>
-      <p><b>Thời lượng:</b> {movie.Duration} phút</p>
-      <p><b>Quốc gia:</b> {movie.Country}</p>
-      <p>{movie.Description}</p>
+    <div 
+      className="movie-detail"
+      style={{
+        backgroundImage: `url(${movie.PosterURL})`
+      }}
+    >
+      <div className="overlay">
+        <div className="detail-container">
+
+          {/* Poster */}
+          <div className="poster">
+            <img src={movie.PosterURL} alt={movie.Title} />
+          </div>
+
+          {/* Info */}
+          <div className="info">
+            <h1 className="title">{movie.Title}</h1>
+
+            <div className="meta">
+              <span>{movie.ReleaseYear}</span>
+              <span>{movie.Duration} phút</span>
+              <span>{movie.Country}</span>
+            </div>
+
+            <p className="description">
+              {movie.Description}
+            </p>
+
+            <div className="buttons">
+              <button className="btn-play">▶ Xem phim</button>
+              <button className="btn-trailer">Trailer</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
     </div>
   );
 }

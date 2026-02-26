@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
 import "./MovieList.css";
+import { useNavigate } from "react-router-dom";
 
-function MovieList({ filter }) {   // 👈 nhận filter
+function MovieList({ filter }) {
   const [movies, setMovies] = useState([]);
+  const navigate = useNavigate(); // 👈 thêm dòng này
 
   useEffect(() => {
     let url = "/movies";
@@ -16,26 +18,32 @@ function MovieList({ filter }) {   // 👈 nhận filter
       .then(res => setMovies(res.data))
       .catch(err => console.error(err));
 
-  }, [filter]); // 👈 QUAN TRỌNG
+  }, [filter]);
 
   return (
     <div className="movie-container">
       <h2 className="section-title">
-        {filter === "single"
+        {filter === "PhimLe"
           ? "PHIM LẺ"
-          : filter === "series"
+          : filter === "PhimBo"
           ? "PHIM BỘ"
-          : "PHIM ĐỀ CỬ"}
+          : "TẤT CẢ PHIM"}
       </h2>
 
       <div className="movie-grid">
         {movies.map(movie => (
-          <div key={movie.MovieID} className="movie-card">
+          <div
+            key={movie.MovieID}
+            className="movie-card"
+            onClick={() => navigate(`/movie/${movie.MovieID}`)}  // 👈 click chuyển trang
+            style={{ cursor: "pointer" }}
+          >
             <img
               src={movie.PosterURL}
               alt={movie.Title}
               className="movie-poster"
             />
+
             <div className="movie-info">
               <h4>{movie.Title}</h4>
               <p>{movie.ReleaseYear}</p>

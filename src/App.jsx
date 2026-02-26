@@ -1,18 +1,34 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 import Header from "./components/Header";
 import MovieList from "./components/MovieList";
+import MovieDetail from "./components/MovieDetail";
 import Banner from "./components/Banner";
-import "./style.css";
 
 function App() {
-  const [filter, setFilter] = useState(""); // 👈 thêm dòng này
+  const [filter, setFilter] = useState("");
 
   return (
-    <>
-      <Header setFilter={setFilter} />   {/* truyền xuống */}
-      <Banner />
-      <MovieList filter={filter} />      {/* truyền xuống */}
-    </>
+    <Router>
+      <Header setFilter={setFilter} />
+
+      <Routes>
+        <Route 
+          path="/" 
+          element={
+            <>
+              <Banner />
+              <MovieList filter={filter} />
+            </>
+          } 
+        />
+
+        <Route 
+          path="/movie/:id" 
+          element={<MovieDetail />} 
+        />
+      </Routes>
+    </Router>
   );
 }
 

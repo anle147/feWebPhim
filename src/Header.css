@@ -27,13 +27,15 @@
 .nav a {
   text-decoration: none;
   color: #ffffffcc;
-  font-weight: 500;
+  font-weight: 700;
+  font-size: 20px;
+  text-transform: uppercase;  /* 👈 viết hoa */
   transition: 0.3s;
 }
-
 .nav a:hover {
   color: #ffd700;
   transform: translateY(-2px);
+  text-shadow: 0 0 8px #ffd700;  /* 👈 thêm glow */
 }
 
 .right-section {
@@ -76,13 +78,12 @@
 }
 
 .register-btn {
-  padding: 8px 16px;
-  border: none;
-  background: #ff0000;
-  color: white;
-  font-weight: 600;
-  border-radius: 30px;
-  cursor: pointer;
+  padding: 14px 32px;
+  font-size: 17px;
+  font-weight: 700;
+  background: linear-gradient(45deg, #ff0000, #ff4d4d);
+  border-radius: 40px;
+  box-shadow: 0 4px 15px rgba(255, 0, 0, 0.4);
   transition: 0.3s;
 }
 

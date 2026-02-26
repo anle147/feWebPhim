@@ -1,10 +1,12 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "../services/api";
 import "./MovieDetail.css";
 
 function MovieDetail() {
   const { id } = useParams();
+  const navigate = useNavigate(); // 👈 thêm cái này
+
   const [movie, setMovie] = useState(null);
   const [showTrailer, setShowTrailer] = useState(false);
 
@@ -52,8 +54,16 @@ function MovieDetail() {
             </p>
 
             <div className="buttons">
-              <button className="btn-play">▶ Xem phim</button>
 
+              {/* ✅ NÚT XEM PHIM */}
+              <button 
+                className="btn-play"
+                onClick={() => navigate(`/watch/${movie.MovieID}`)}
+              >
+                ▶ Xem phim
+              </button>
+
+              {/* Trailer */}
               {movie.TrailerURL && (
                 <button
                   className="btn-trailer"
@@ -64,7 +74,7 @@ function MovieDetail() {
               )}
             </div>
 
-            {/* Trailer */}
+            {/* Trailer iframe */}
             {showTrailer && movie.TrailerURL && (
               <div className="trailer">
                 <iframe

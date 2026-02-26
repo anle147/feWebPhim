@@ -6,6 +6,7 @@ import "./MovieDetail.css";
 function MovieDetail() {
   const { id } = useParams();
   const [movie, setMovie] = useState(null);
+  const [showTrailer, setShowTrailer] = useState(false);
 
   useEffect(() => {
     api.get(`/movies/${id}`)
@@ -13,10 +14,16 @@ function MovieDetail() {
       .catch(err => console.error(err));
   }, [id]);
 
+  // Tạo link embed từ YouTube video ID
+  const getEmbedUrl = (videoId) => {
+    if (!videoId) return "";
+    return `https://www.youtube.com/embed/${videoId}`;
+  };
+
   if (!movie) return <div className="loading">Loading...</div>;
 
   return (
-    <div 
+    <div
       className="movie-detail"
       style={{
         backgroundImage: `url(${movie.PosterURL})`
@@ -46,10 +53,32 @@ function MovieDetail() {
 
             <div className="buttons">
               <button className="btn-play">▶ Xem phim</button>
-              <button className="btn-trailer">Trailer</button>
-            </div>
-          </div>
 
+              {movie.TrailerURL && (
+                <button
+                  className="btn-trailer"
+                  onClick={() => setShowTrailer(!showTrailer)}
+                >
+                  {showTrailer ? "Ẩn Trailer" : "Trailer"}
+                </button>
+              )}
+            </div>
+
+            {/* Trailer */}
+            {showTrailer && movie.TrailerURL && (
+              <div className="trailer">
+                <iframe
+                  width="100%"
+                  height="400"
+                  src={getEmbedUrl(movie.TrailerURL)}
+                  title="Trailer"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            )}
+
+          </div>
         </div>
       </div>
     </div>

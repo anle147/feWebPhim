@@ -99,3 +99,22 @@
   padding: 100px;
   font-size: 24px;
 }
+.trailer {
+  margin-top: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.btn-trailer {
+  background-color: #e50914;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.btn-trailer:hover {
+  opacity: 0.9;
+}

@@ -1,3 +1,5 @@
+// src/components/Header.jsx
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../Header.css";
@@ -14,15 +16,14 @@ function Header({ setFilter }) {
   };
 
   const handleSearch = () => {
-  if (!search.trim()) return;
-  navigate(`/search?keyword=${search}`);
+    if (!search.trim()) return;
+    navigate(`/search?keyword=${search}`);
   };
 
   return (
     <header className="header">
       <div className="header-container">
-
-        <div 
+        <div
           className="logo"
           onClick={() => handleFilter("")}
           style={{ cursor: "pointer" }}
@@ -31,11 +32,23 @@ function Header({ setFilter }) {
         </div>
 
         <nav className="nav">
-          <a href="#" onClick={(e) => { e.preventDefault(); handleFilter("PhimLe"); }}>
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              handleFilter("PhimLe");
+            }}
+          >
             Phim lẻ
           </a>
 
-          <a href="#" onClick={(e) => { e.preventDefault(); handleFilter("PhimBo"); }}>
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              handleFilter("PhimBo");
+            }}
+          >
             Phim bộ
           </a>
         </nav>
@@ -54,9 +67,13 @@ function Header({ setFilter }) {
             <button onClick={handleSearch}>🔍</button>
           </div>
 
-          <button className="register-btn">Đăng ký</button>
+          <button
+            className="register-btn"
+            onClick={() => navigate("/register")}
+          >
+            Đăng ký
+          </button>
         </div>
-
       </div>
     </header>
   );

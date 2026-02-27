@@ -6,7 +6,8 @@ import MovieList from "./components/MovieList";
 import MovieDetail from "./components/MovieDetail";
 import Banner from "./components/Banner";
 import WatchMovie from "./components/WatchMovie";
-import SearchPage from "./components/SearchPage"; // 👈 thêm trang search
+import SearchPage from "./components/SearchPage";
+import Register from "./components/Register";
 
 function App() {
   const [filter, setFilter] = useState("");
@@ -16,36 +17,20 @@ function App() {
       <Header setFilter={setFilter} />
 
       <Routes>
-
-        {/* Trang chủ */}
-        <Route 
-          path="/" 
+        <Route
+          path="/"
           element={
             <>
               <Banner />
               <MovieList filter={filter} />
             </>
-          } 
+          }
         />
 
-        {/* Trang tìm kiếm */}
-        <Route 
-          path="/search" 
-          element={<SearchPage />} 
-        />
-
-        {/* Trang chi tiết */}
-        <Route 
-          path="/movie/:id" 
-          element={<MovieDetail />} 
-        />
-
-        {/* Trang xem phim */}
-        <Route 
-          path="/watch/:id" 
-          element={<WatchMovie />} 
-        />
-
+        <Route path="/search" element={<SearchPage />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/movie/:id" element={<MovieDetail />} />
+        <Route path="/watch/:id" element={<WatchMovie />} />
       </Routes>
     </Router>
   );

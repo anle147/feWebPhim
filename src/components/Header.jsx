@@ -7,10 +7,15 @@ function Header({ setFilter }) {
   const navigate = useNavigate();
 
   const handleFilter = (type) => {
-    navigate("/");      // 👈 quay về trang chủ trước
-    setTimeout(() => {  // 👈 đợi Home render xong
+    navigate("/");
+    setTimeout(() => {
       setFilter(type);
     }, 0);
+  };
+
+  const handleSearch = () => {
+  if (!search.trim()) return;
+  navigate(`/search?keyword=${search}`);
   };
 
   return (
@@ -26,23 +31,11 @@ function Header({ setFilter }) {
         </div>
 
         <nav className="nav">
-          <a 
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              handleFilter("PhimLe");
-            }}
-          >
+          <a href="#" onClick={(e) => { e.preventDefault(); handleFilter("PhimLe"); }}>
             Phim lẻ
           </a>
 
-          <a 
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              handleFilter("PhimBo");
-            }}
-          >
+          <a href="#" onClick={(e) => { e.preventDefault(); handleFilter("PhimBo"); }}>
             Phim bộ
           </a>
         </nav>
@@ -54,8 +47,11 @@ function Header({ setFilter }) {
               placeholder="Tìm phim..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleSearch();
+              }}
             />
-            <button>🔍</button>
+            <button onClick={handleSearch}>🔍</button>
           </div>
 
           <button className="register-btn">Đăng ký</button>

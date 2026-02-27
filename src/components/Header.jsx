@@ -1,8 +1,17 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../Header.css";
 
-function Header({ setFilter }) {   // 👈 nhận props từ App
+function Header({ setFilter }) {
   const [search, setSearch] = useState("");
+  const navigate = useNavigate();
+
+  const handleFilter = (type) => {
+    navigate("/");      // 👈 quay về trang chủ trước
+    setTimeout(() => {  // 👈 đợi Home render xong
+      setFilter(type);
+    }, 0);
+  };
 
   return (
     <header className="header">
@@ -10,7 +19,7 @@ function Header({ setFilter }) {   // 👈 nhận props từ App
 
         <div 
           className="logo"
-          onClick={() => setFilter("")}   // 👈 click logo = tất cả
+          onClick={() => handleFilter("")}
           style={{ cursor: "pointer" }}
         >
           HeyPhim
@@ -21,7 +30,7 @@ function Header({ setFilter }) {   // 👈 nhận props từ App
             href="#"
             onClick={(e) => {
               e.preventDefault();
-              setFilter("PhimLe");   // 👈 đúng với DB bạn
+              handleFilter("PhimLe");
             }}
           >
             Phim lẻ
@@ -31,7 +40,7 @@ function Header({ setFilter }) {   // 👈 nhận props từ App
             href="#"
             onClick={(e) => {
               e.preventDefault();
-              setFilter("PhimBo");   // 👈 nếu DB có PhimBo
+              handleFilter("PhimBo");
             }}
           >
             Phim bộ

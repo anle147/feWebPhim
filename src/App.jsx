@@ -8,6 +8,7 @@ import Banner from "./components/Banner";
 import WatchMovie from "./components/WatchMovie";
 import SearchPage from "./components/SearchPage";
 import Register from "./components/Register";
+import Login from "./components/Login";
 
 function App() {
   const [filter, setFilter] = useState("");
@@ -29,6 +30,7 @@ function App() {
 
         <Route path="/search" element={<SearchPage />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/movie/:id" element={<MovieDetail />} />
         <Route path="/watch/:id" element={<WatchMovie />} />
       </Routes>

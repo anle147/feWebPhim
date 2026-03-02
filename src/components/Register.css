@@ -69,3 +69,19 @@
   margin-bottom: 10px;
   text-align: center;
 }
+
+.register-login-text {
+  margin-top: 15px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.register-login-link {
+  color: #007bff;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.register-login-link:hover {
+  text-decoration: underline;
+}

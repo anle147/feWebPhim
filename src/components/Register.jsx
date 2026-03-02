@@ -1,8 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import "./Register.css";
 
 function Register() {
+  const navigate = useNavigate();
+
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,19 +21,16 @@ function Register() {
     setError("");
     setSuccess("");
 
-    // Trim dữ liệu tránh khoảng trắng
     const u = username.trim();
     const em = email.trim();
     const p = password.trim();
     const cp = confirmPassword.trim();
 
-    // Kiểm tra đầy đủ
     if (!u || !em || !p || !cp) {
       setError("Vui lòng nhập đầy đủ thông tin");
       return;
     }
 
-    // Kiểm tra mật khẩu khớp
     if (p !== cp) {
       setError("Mật khẩu nhập lại không khớp");
       return;
@@ -47,14 +47,12 @@ function Register() {
 
       setSuccess(res.data.message);
 
-      // Reset form
       setUsername("");
       setEmail("");
       setPassword("");
       setConfirmPassword("");
 
     } catch (err) {
-      console.log("Backend error:", err.response);
       setError(err.response?.data?.message || "Có lỗi xảy ra");
     } finally {
       setLoading(false);
@@ -104,6 +102,17 @@ function Register() {
         <button type="submit" className="register-button" disabled={loading}>
           {loading ? "Đang xử lý..." : "Đăng Ký"}
         </button>
+
+        {/* 👇 Thêm phần chuyển sang đăng nhập */}
+        <p className="register-login-text">
+          Đã có tài khoản?{" "}
+          <span
+            className="register-login-link"
+            onClick={() => navigate("/login")}
+          >
+            Đăng nhập
+          </span>
+        </p>
       </form>
     </div>
   );

@@ -1,30 +1,64 @@
 import { useState } from "react";
+import api from "../services/api";
 import "./Register.css";
 
 function Register() {
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     setError("");
     setSuccess("");
 
-    if (!username || !password || !confirmPassword) {
+    // Trim dữ liệu tránh khoảng trắng
+    const u = username.trim();
+    const em = email.trim();
+    const p = password.trim();
+    const cp = confirmPassword.trim();
+
+    // Kiểm tra đầy đủ
+    if (!u || !em || !p || !cp) {
       setError("Vui lòng nhập đầy đủ thông tin");
       return;
     }
 
-    if (password !== confirmPassword) {
+    // Kiểm tra mật khẩu khớp
+    if (p !== cp) {
       setError("Mật khẩu nhập lại không khớp");
       return;
     }
 
-    setSuccess("Đăng ký thành công 🎉");
+    try {
+      setLoading(true);
+
+      const res = await api.post("/auth/register", {
+        username: u,
+        password: p,
+        email: em,
+      });
+
+      setSuccess(res.data.message);
+
+      // Reset form
+      setUsername("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+
+    } catch (err) {
+      console.log("Backend error:", err.response);
+      setError(err.response?.data?.message || "Có lỗi xảy ra");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -37,6 +71,14 @@ function Register() {
           placeholder="Tên đăng nhập"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          className="register-input"
+        />
+
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           className="register-input"
         />
 
@@ -59,8 +101,8 @@ function Register() {
         {error && <p className="register-error">{error}</p>}
         {success && <p className="register-success">{success}</p>}
 
-        <button type="submit" className="register-button">
-          Đăng Ký
+        <button type="submit" className="register-button" disabled={loading}>
+          {loading ? "Đang xử lý..." : "Đăng Ký"}
         </button>
       </form>
     </div>

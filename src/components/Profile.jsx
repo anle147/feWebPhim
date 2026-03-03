@@ -7,6 +7,15 @@ function Profile() {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
+  // 🔥 Khóa scroll chỉ khi ở trang Profile
+  useEffect(() => {
+    document.body.classList.add("no-scroll");
+
+    return () => {
+      document.body.classList.remove("no-scroll");
+    };
+  }, []);
+
   useEffect(() => {
     const token = localStorage.getItem("token");
 
@@ -51,25 +60,28 @@ function Profile() {
     <div className="profile">
       <div className="profile-card">
         <h2>Trang Tài Khoản</h2>
-        <p>
-          <strong>Tên đăng nhập:</strong> {user.Username}
-        </p>
 
-        <p>
-          <strong>Email:</strong> {user.Email || "Chưa cập nhật"}
-        </p>
+        <div className="profile-info">
+          <p>
+            <strong>Tên đăng nhập:</strong> {user.Username}
+          </p>
 
-        <p>
-          <strong>Số dư:</strong>{" "}
-          <span className="balance">
-            {user.Balance?.toLocaleString("vi-VN")} đ
-          </span>
-        </p>
+          <p>
+            <strong>Email:</strong> {user.Email || "Chưa cập nhật"}
+          </p>
 
-        <p>
-          <strong>Ngày tạo:</strong>{" "}
-          {new Date(user.CreatedAt).toLocaleDateString("vi-VN")}
-        </p>
+          <p>
+            <strong>Số dư:</strong>{" "}
+            <span className="balance">
+              {user.Balance?.toLocaleString("vi-VN")} đ
+            </span>
+          </p>
+
+          <p>
+            <strong>Ngày tạo:</strong>{" "}
+            {new Date(user.CreatedAt).toLocaleDateString("vi-VN")}
+          </p>
+        </div>
 
         <button onClick={handleLogout}>Đăng xuất</button>
       </div>

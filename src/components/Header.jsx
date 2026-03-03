@@ -1,21 +1,22 @@
 // src/components/Header.jsx
 
 import { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../Header.css";
 
 function Header({ setFilter }) {
   const [search, setSearch] = useState("");
-  const navigate = useNavigate();
-  const location = useLocation(); // 👈 quan trọng để re-render khi route đổi
+  const [openMenu, setOpenMenu] = useState(false);
 
-  // 👇 đọc localStorage mỗi lần route thay đổi
+  const navigate = useNavigate();
+
   const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
+    setOpenMenu(false);
     navigate("/");
   };
 
@@ -71,30 +72,15 @@ function Header({ setFilter }) {
               placeholder="Tìm phim..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") handleSearch();
-              }}
+              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             />
             <button onClick={handleSearch}>🔍</button>
           </div>
 
-          {/* 👇 Nếu có token = đã đăng nhập */}
-          {token ? (
+          {/* ===================== */}
+          {/* CHƯA LOGIN */}
+          {!token && (
             <>
-              <span className="welcome-text">
-                Xin chào {username} 👋
-              </span>
-
-              <button
-                className="register-btn"
-                onClick={handleLogout}
-              >
-                Đăng xuất
-              </button>
-            </>
-          ) : (
-            <>
-
               <button
                 className="register-btn"
                 onClick={() => navigate("/register")}
@@ -102,6 +88,41 @@ function Header({ setFilter }) {
                 Đăng ký
               </button>
             </>
+          )}
+
+          {/* ===================== */}
+          {/* ĐÃ LOGIN */}
+          {token && (
+            <div className="profile-wrapper">
+              <div
+                className="avatar"
+                onClick={() => setOpenMenu(!openMenu)}
+              >
+                {username?.charAt(0).toUpperCase()}
+              </div>
+
+              {openMenu && (
+                <div className="profile-dropdown">
+                <div
+                  onClick={() => {
+                    setOpenMenu(false);
+                    navigate("/profile");
+                  }}
+                >
+                  Tài khoản
+                </div>
+                  <div>Donate</div>
+                  <div>Đang theo dõi</div>
+                  <div>Bộ sưu tập</div>
+                  <div
+                    className="logout-item"
+                    onClick={handleLogout}
+                  >
+                    Thoát
+                  </div>
+                </div>
+              )}
+            </div>
           )}
         </div>
       </div>

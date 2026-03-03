@@ -1,12 +1,23 @@
 // src/components/Header.jsx
 
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "../Header.css";
 
 function Header({ setFilter }) {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
+  const location = useLocation(); // 👈 quan trọng để re-render khi route đổi
+
+  // 👇 đọc localStorage mỗi lần route thay đổi
+  const token = localStorage.getItem("token");
+  const username = localStorage.getItem("username");
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    navigate("/");
+  };
 
   const handleFilter = (type) => {
     navigate("/");
@@ -67,12 +78,31 @@ function Header({ setFilter }) {
             <button onClick={handleSearch}>🔍</button>
           </div>
 
-          <button
-            className="register-btn"
-            onClick={() => navigate("/register")}
-          >
-            Đăng ký
-          </button>
+          {/* 👇 Nếu có token = đã đăng nhập */}
+          {token ? (
+            <>
+              <span className="welcome-text">
+                Xin chào {username} 👋
+              </span>
+
+              <button
+                className="register-btn"
+                onClick={handleLogout}
+              >
+                Đăng xuất
+              </button>
+            </>
+          ) : (
+            <>
+
+              <button
+                className="register-btn"
+                onClick={() => navigate("/register")}
+              >
+                Đăng ký
+              </button>
+            </>
+          )}
         </div>
       </div>
     </header>

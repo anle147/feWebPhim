@@ -52,6 +52,10 @@ function Register() {
       setPassword("");
       setConfirmPassword("");
 
+      setTimeout(() => {
+      navigate("/login");
+      }, 3000);
+
     } catch (err) {
       setError(err.response?.data?.message || "Có lỗi xảy ra");
     } finally {

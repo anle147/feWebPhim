@@ -1,0 +1,62 @@
+.favorites-container {
+  padding: 60px 100px;
+  background-color: #081b29;
+  min-height: 100vh;
+}
+
+.favorites-title {
+  color: white;
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+/* grid 5 phim */
+.favorites-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 25px;
+}
+
+.favorites-card {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.favorites-card:hover {
+  transform: scale(1.06);
+}
+
+.favorites-poster {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.favorites-info {
+  margin-top: 12px;
+  color: white;
+}
+
+.favorites-info h4 {
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.favorites-info p {
+  font-size: 13px;
+  color: #aaa;
+  margin-top: 4px;
+}
+
+.favorites-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  margin-top: 80px;
+  font-size: 28px;
+  font-weight: 600;
+  color: #ffffff;
+  opacity: 0.85;
+}

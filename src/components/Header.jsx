@@ -13,15 +13,20 @@ function Header({ setFilter }) {
   const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
 
+  // logout
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
+    localStorage.removeItem("userId"); // thêm dòng này
+
     setOpenMenu(false);
+
     navigate("/");
   };
 
   const handleFilter = (type) => {
     navigate("/");
+
     setTimeout(() => {
       setFilter(type);
     }, 0);
@@ -35,6 +40,7 @@ function Header({ setFilter }) {
   return (
     <header className="header">
       <div className="header-container">
+
         <div
           className="logo"
           onClick={() => handleFilter("")}
@@ -44,6 +50,7 @@ function Header({ setFilter }) {
         </div>
 
         <nav className="nav">
+
           <a
             href="#"
             onClick={(e) => {
@@ -63,9 +70,11 @@ function Header({ setFilter }) {
           >
             Phim bộ
           </a>
+
         </nav>
 
         <div className="right-section">
+
           <div className="search-box">
             <input
               type="text"
@@ -94,36 +103,50 @@ function Header({ setFilter }) {
           {/* ĐÃ LOGIN */}
           {token && (
             <div className="profile-wrapper">
+
               <div
                 className="avatar"
                 onClick={() => setOpenMenu(!openMenu)}
               >
-                {username?.charAt(0).toUpperCase()}
+                {username ? username.charAt(0).toUpperCase() : "U"}
               </div>
 
               {openMenu && (
                 <div className="profile-dropdown">
-                <div
-                  onClick={() => {
-                    setOpenMenu(false);
-                    navigate("/profile");
-                  }}
-                >
-                  Tài khoản
-                </div>
+
+                  <div
+                    onClick={() => {
+                      setOpenMenu(false);
+                      navigate("/profile");
+                    }}
+                  >
+                    Tài khoản
+                  </div>
+
                   <div>Donate</div>
-                  <div>Đang theo dõi</div>
+                  <div
+                      onClick={() => {
+                        setOpenMenu(false);
+                      navigate("/favorites");
+                    }}
+                    >
+                    Đang theo dõi
+                    </div>
                   <div>Bộ sưu tập</div>
+
                   <div
                     className="logout-item"
                     onClick={handleLogout}
                   >
                     Thoát
                   </div>
+
                 </div>
               )}
+
             </div>
           )}
+
         </div>
       </div>
     </header>

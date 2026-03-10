@@ -10,6 +10,7 @@ import SearchPage from "./components/SearchPage";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import Profile from "./components/Profile"; // ✅ THÊM DÒNG NÀY
+import Favorites from "./components/Favorites"; // ✅ THÊM DÒNG NÀY
 
 function App() {
   const [filter, setFilter] = useState("");
@@ -35,6 +36,7 @@ function App() {
         <Route path="/profile" element={<Profile />} /> {/* ✅ THÊM DÒNG NÀY */}
         <Route path="/movie/:id" element={<MovieDetail />} />
         <Route path="/watch/:id" element={<WatchMovie />} />
+        <Route path="/favorites" element={<Favorites />} />
       </Routes>
     </Router>
   );

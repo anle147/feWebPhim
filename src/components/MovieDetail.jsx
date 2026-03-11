@@ -10,14 +10,25 @@ function MovieDetail() {
 
   const [movie, setMovie] = useState(null);
   const [actors, setActors] = useState([]);
+  const [comments, setComments] = useState([]);
+  const [content, setContent] = useState("");
+
   const [showTrailer, setShowTrailer] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
 
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("userId");
 
+  // pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const commentsPerPage = 5;
 
-  // lấy thông tin phim + diễn viên
+  const indexOfLast = currentPage * commentsPerPage;
+  const indexOfFirst = indexOfLast - commentsPerPage;
+  const currentComments = comments.slice(indexOfFirst, indexOfLast);
+  const totalPages = Math.ceil(comments.length / commentsPerPage);
+
+  // load data
   useEffect(() => {
 
     const fetchData = async () => {
@@ -30,6 +41,9 @@ function MovieDetail() {
         const actorRes = await api.get(`/movies/${id}/actors`);
         setActors(actorRes.data);
 
+        const commentRes = await api.get(`/movies/${id}/comments`);
+        setComments(commentRes.data);
+
       } catch (error) {
         console.error(error);
       }
@@ -41,7 +55,7 @@ function MovieDetail() {
   }, [id]);
 
 
-  // kiểm tra favorite
+  // check favorite
   useEffect(() => {
 
     if (!token || !userId) {
@@ -103,6 +117,37 @@ function MovieDetail() {
   };
 
 
+  // gửi comment
+  const handleComment = async () => {
+
+    if (!token || !userId) {
+      alert("Vui lòng đăng nhập để bình luận");
+      navigate("/login");
+      return;
+    }
+
+    if (!content.trim()) return;
+
+    try {
+
+      await api.post(`/movies/${id}/comments`, {
+        userId: Number(userId),
+        content: content
+      });
+
+      const res = await api.get(`/movies/${id}/comments`);
+      setComments(res.data);
+
+      setCurrentPage(1); // quay về trang đầu
+      setContent("");
+
+    } catch (error) {
+      console.error(error);
+    }
+
+  };
+
+
   const getEmbedUrl = (videoId) => {
     if (!videoId) return "";
     return `https://www.youtube.com/embed/${videoId}`;
@@ -129,7 +174,6 @@ function MovieDetail() {
             <img src={movie.PosterURL} alt={movie.Title} />
           </div>
 
-
           <div className="info">
 
             <h1 className="title">{movie.Title}</h1>
@@ -141,7 +185,6 @@ function MovieDetail() {
             </div>
 
             <p className="description">{movie.Description}</p>
-
 
             <div className="buttons">
 
@@ -189,7 +232,7 @@ function MovieDetail() {
             )}
 
 
-            {/* Danh sách diễn viên */}
+            {/* ACTORS */}
             {actors.length > 0 && (
 
               <div className="actors">
@@ -228,6 +271,82 @@ function MovieDetail() {
               </div>
 
             )}
+
+
+            {/* COMMENTS */}
+            <div className="comments">
+
+              <h3>Bình luận</h3>
+
+              <div className="comment-input">
+
+                <textarea
+                  placeholder="Viết bình luận..."
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                />
+
+                <button onClick={handleComment}>
+                  Gửi
+                </button>
+
+              </div>
+
+
+              <div className="comment-list">
+
+                {currentComments.map(c => (
+
+                  <div key={c.CommentID} className="comment-item">
+
+                    <div className="comment-user">
+                      {c.Username}
+                    </div>
+
+                    <div className="comment-content">
+                      {c.Content}
+                    </div>
+
+                    <div className="comment-date">
+                      {new Date(c.CreatedAt).toLocaleString()}
+                    </div>
+
+                  </div>
+
+                ))}
+
+              </div>
+
+
+              {/* PAGINATION */}
+              {totalPages > 1 && (
+
+                <div className="pagination">
+
+                  <button
+                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage(currentPage - 1)}
+                  >
+                    Prev
+                  </button>
+
+                  <span>
+                    Trang {currentPage} / {totalPages}
+                  </span>
+
+                  <button
+                    disabled={currentPage === totalPages}
+                    onClick={() => setCurrentPage(currentPage + 1)}
+                  >
+                    Next
+                  </button>
+
+                </div>
+
+              )}
+
+            </div>
+
 
           </div>
 

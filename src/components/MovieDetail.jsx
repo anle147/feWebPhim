@@ -9,6 +9,7 @@ function MovieDetail() {
   const navigate = useNavigate();
 
   const [movie, setMovie] = useState(null);
+  const [actors, setActors] = useState([]);
   const [showTrailer, setShowTrailer] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
 
@@ -16,12 +17,26 @@ function MovieDetail() {
   const userId = localStorage.getItem("userId");
 
 
-  // lấy thông tin phim
+  // lấy thông tin phim + diễn viên
   useEffect(() => {
 
-    api.get(`/movies/${id}`)
-      .then(res => setMovie(res.data))
-      .catch(err => console.error(err));
+    const fetchData = async () => {
+
+      try {
+
+        const movieRes = await api.get(`/movies/${id}`);
+        setMovie(movieRes.data);
+
+        const actorRes = await api.get(`/movies/${id}/actors`);
+        setActors(actorRes.data);
+
+      } catch (error) {
+        console.error(error);
+      }
+
+    };
+
+    fetchData();
 
   }, [id]);
 
@@ -29,7 +44,6 @@ function MovieDetail() {
   // kiểm tra favorite
   useEffect(() => {
 
-    // ❌ chưa login -> reset favorite
     if (!token || !userId) {
       setIsFavorite(false);
       return;
@@ -38,9 +52,7 @@ function MovieDetail() {
     api.get(`/movies/favorite/${userId}`)
       .then(res => {
 
-        const favorites = res.data;
-
-        const found = favorites.find(
+        const found = res.data.find(
           m => m.MovieID === Number(id)
         );
 
@@ -52,13 +64,6 @@ function MovieDetail() {
   }, [id, token, userId]);
 
 
-  const getEmbedUrl = (videoId) => {
-    if (!videoId) return "";
-    return `https://www.youtube.com/embed/${videoId}`;
-  };
-
-
-  // toggle favorite
   const toggleFavorite = async () => {
 
     if (!token || !userId) {
@@ -95,6 +100,12 @@ function MovieDetail() {
       console.error(error);
     }
 
+  };
+
+
+  const getEmbedUrl = (videoId) => {
+    if (!videoId) return "";
+    return `https://www.youtube.com/embed/${videoId}`;
   };
 
 
@@ -141,14 +152,12 @@ function MovieDetail() {
                 ▶ Xem phim
               </button>
 
-
               <button
                 className={`btn-favorite ${isFavorite ? "active" : ""}`}
                 onClick={toggleFavorite}
               >
                 {isFavorite ? "❤️ Bỏ yêu thích" : "🤍 Yêu thích"}
               </button>
-
 
               {movie.TrailerURL && (
                 <button
@@ -173,7 +182,48 @@ function MovieDetail() {
                   title="Trailer"
                   frameBorder="0"
                   allowFullScreen
-                ></iframe>
+                />
+
+              </div>
+
+            )}
+
+
+            {/* Danh sách diễn viên */}
+            {actors.length > 0 && (
+
+              <div className="actors">
+
+                <h3>Diễn viên</h3>
+
+                <div className="actor-list">
+
+                  {actors.map(actor => (
+
+                    <div
+                      key={actor.ActorID}
+                      className="actor-item"
+                      onClick={() => navigate(`/actor/${actor.ActorID}`)}
+                    >
+
+                      <img
+                        src={actor.AvatarURL}
+                        alt={actor.ActorName}
+                      />
+
+                      <p className="actor-name">
+                        {actor.ActorName}
+                      </p>
+
+                      <span className="actor-role">
+                        {actor.RoleName}
+                      </span>
+
+                    </div>
+
+                  ))}
+
+                </div>
 
               </div>
 

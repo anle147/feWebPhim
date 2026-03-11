@@ -1,0 +1,56 @@
+.actor-movies {
+  padding: 60px 100px;
+  background: linear-gradient(180deg,#081b29,#050f17);
+  min-height: 100vh;
+}
+
+/* Title */
+.actor-movies h2 {
+  color: white;
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom: 35px;
+  letter-spacing: 0.5px;
+}
+
+/* Grid 5 phim */
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 28px;
+}
+
+/* Card */
+.movie-card {
+  transition: all 0.35s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+/* Hover */
+.movie-card:hover {
+  transform: translateY(-6px) scale(1.05);
+}
+
+/* Poster */
+.movie-card img {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+  transition: 0.3s;
+}
+
+.movie-card:hover img {
+  transform: scale(1.03);
+}
+
+/* Title */
+.movie-title {
+  margin-top: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  color: white;
+}

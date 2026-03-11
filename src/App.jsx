@@ -11,6 +11,7 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 import Profile from "./components/Profile"; // ✅ THÊM DÒNG NÀY
 import Favorites from "./components/Favorites"; // ✅ THÊM DÒNG NÀY
+import ActorMovies from "./components/ActorMovies";
 
 function App() {
   const [filter, setFilter] = useState("");
@@ -37,6 +38,7 @@ function App() {
         <Route path="/movie/:id" element={<MovieDetail />} />
         <Route path="/watch/:id" element={<WatchMovie />} />
         <Route path="/favorites" element={<Favorites />} />
+        <Route path="/actor/:actorId" element={<ActorMovies />} />
       </Routes>
     </Router>
   );

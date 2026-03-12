@@ -109,39 +109,44 @@ function Header({ setFilter }) {
 
           {/* ================= GENRES ================= */}
 
-          <div className="genre-menu">
+                  <div className="genre-menu">
 
-            <span
-              onClick={() => setOpenGenres(!openGenres)}
-            >
-              Thể loại ▾
-            </span>
+          <span
+            onClick={() => setOpenGenres(!openGenres)}
+          >
+            Thể loại ▾
+          </span>
 
-            {openGenres && (
+          {openGenres && (
 
-              <div className="genre-dropdown">
+            <div className="genre-dropdown">
 
-                {genres.map((genre) => (
+              {genres.map((genre) => (
 
-                  <div
-                    key={genre.GenreID}
-                    onClick={() => {
+                <div
+                  key={genre.GenreID}
+                  onClick={() => {
 
-                      navigate(`/genre/${genre.GenreID}`);
-                      setOpenGenres(false);
+                    navigate("/");
 
-                    }}
-                  >
-                    {genre.GenreName}
-                  </div>
+                    setTimeout(() => {
+                      setFilter(`genre-${genre.GenreID}`);
+                    }, 0);
 
-                ))}
+                    setOpenGenres(false);
 
-              </div>
+                  }}
+                >
+                  {genre.GenreName}
+                </div>
 
-            )}
+              ))}
 
-          </div>
+            </div>
+
+          )}
+
+        </div>
 
         </nav>
 
